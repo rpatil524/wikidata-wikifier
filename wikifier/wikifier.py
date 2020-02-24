@@ -6,7 +6,7 @@ import requests
 import traceback
 import pandas as pd
 from wikifier.tfidf import TFIDF
-from wikifier.cta import CTA
+from wikifier.run_cta import CTA
 from wikifier.candidate_selection import CandidateSelection
 from wikifier.add_levenshtein_similarity_feature import AddLevenshteinSimilarity
 
@@ -443,12 +443,12 @@ class Wikifier(object):
         qnode_to_type_map = dict()
         for qnode in qnode_to_labels_dict:
             dbpedia_instance_types = qnode_to_labels_dict[qnode]['db_instance_types']
-            _ = list()
-            for instance_type in dbpedia_instance_types:
-                if instance_type.startswith('http://www.wikidata.org/entity'):
-                    _.append(instance_type.split('/')[-1])
-            # qnode_to_type_map[qnode] = list(set(dbpedia_instance_types))
-            qnode_to_type_map[qnode] = _
+            # _ = list()
+            # for instance_type in dbpedia_instance_types:
+            #     if instance_type.startswith('http://www.wikidata.org/entity'):
+            #         _.append(instance_type.split('/')[-1])
+            qnode_to_type_map[qnode] = list(set(dbpedia_instance_types))
+            # qnode_to_type_map[qnode] = _
         return qnode_to_type_map
 
     @staticmethod

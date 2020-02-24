@@ -4,16 +4,14 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 
 
 class CTA(object):
-    def __init__(self, qnode_typeof):
-        self.qnode_typeof = qnode_typeof
+    def __init__(self, dburi_typeof):
+        self.dburi_typeof = dburi_typeof
 
-        # self.super_classes = pd.read_csv('wikifier/caches/SuperClasses.csv', header=None)[0].tolist()
-        self.super_classes = ['Q35120'] #Entity class at root of hierarchy
+        self.super_classes = pd.read_csv('wikifier/caches/SuperClasses.csv', header=None)[0].tolist()
 
         self.db_classes = json.load(open('wikifier/caches/DBClasses.json'))
 
-        # self.db_classes_closure = json.load(open('wikifier/caches/DBClassesClosure.json'))
-        self.wikidata_classes_closure = json.load(open('wikifier/caches/wikidata_class_closure.json'))
+        self.db_classes_closure = json.load(open('wikifier/caches/DBClassesClosure.json'))
         self.sparqldb = SPARQLWrapper("http://dbpedia.org/sparql")
 
     def is_instance_of(self, uri):
@@ -29,29 +27,29 @@ class CTA(object):
             instances.add(dbp)
         return instances
 
-    def evaluate_class_closure(self, qnodes, classuri):
+    def evaluate_class_closure(self, urilist, classuri):
         matches = 0
         classuriclosure = set()
-        if classuri in self.wikidata_classes_closure:
-            classuriclosure = set(self.wikidata_classes_closure[classuri])
-        valid_qnode = []
-        for qnode in qnodes:
-            if qnode in self.qnode_typeof:
-                instances = self.qnode_typeof[qnode]
+        if classuri in self.db_classes_closure:
+            classuriclosure = set(self.db_classes_closure[classuri])
+        validuri = []
+        for uri in urilist:
+            if uri in self.dburi_typeof:
+                instances = self.dburi_typeof[uri]
             else:
-                instances = self.is_instance_of(qnode)
-                self.qnode_typeof[qnode] = list(instances)
+                instances = self.is_instance_of(uri)
+                self.dburi_typeof[uri] = list(instances)
 
             for instance in instances:
                 if instance in classuriclosure:
-                    valid_qnode.append(qnode)
+                    validuri.append(uri)
                     matches += 1
                     break
 
-        score = matches / len(qnodes)
-        return [score, valid_qnode]
+        score = matches / len(urilist)
+        return [score, validuri]
 
-    def find_class(self, qnodes, classlist, currentans, ans_list, threshold):
+    def find_class(self, urilist, classlist, currentans, ans_list, threshold):
         ans_list.append(currentans)
         if len(classlist) == 0:
             return
@@ -60,7 +58,7 @@ class CTA(object):
         max_validuri = []
         max_class = ''
         for superclass in classlist:
-            [score, validuri] = self.evaluate_class_closure(qnodes, superclass)
+            [score, validuri] = self.evaluate_class_closure(urilist, superclass)
             if max_score < score:
                 max_score = score
                 max_validuri = validuri
@@ -71,13 +69,13 @@ class CTA(object):
             self.find_class(max_validuri, subclasses, max_class, ans_list, threshold)
             return
 
-    def process(self, df, threshold=0.508, class_level=0):
+    def process(self, urilist, threshold=0.508, class_level=0):
 
-        qnodes = df['answer'].tolist()
-        if len(qnodes) == 0:
+
+        if len(urilist) == 0:
             return ""
         ans_list = []
-        self.find_class(qnodes, self.super_classes, '', ans_list, threshold)
+        self.find_class(urilist, self.super_classes, '', ans_list, threshold)
         ans_list = ans_list[1:]
         if len(ans_list) <= class_level:
             return ""
