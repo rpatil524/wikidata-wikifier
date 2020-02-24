@@ -2,6 +2,7 @@ import json
 import queue
 import pandas as pd
 
+
 class CTA(object):
     def __init__(self, type_of_dict, super_class_closure_path='wikifier/caches/wikidata_super_classes_closure.json',
                  direct_children_dict_path='wikifier/caches/wikidata_direct_children.json',
@@ -29,28 +30,27 @@ class CTA(object):
         q.put(self.graph_root)
 
         matched_classes = []
-        max_score = -1
         seen_nodes = {}
         while (q.qsize() > 0):
             superclass = q.get()
             score = self.evaluate_class_closure(items, superclass)
             if score >= threshold:
-                if score >= max_score:
-                    if superclass not in matched_classes:
-                        matched_classes.append(superclass)
-                    max_score = score
+                if superclass not in matched_classes:
+                    matched_classes.append(superclass)
+
                 subclasses = self.direct_children_dict[superclass]
                 for subclass in subclasses:
                     if subclass not in seen_nodes:
                         seen_nodes[subclass] = 1
                         q.put(subclass)
 
-        print(matched_classes)
         return matched_classes
 
     def process(self, items, threshold=0.508):
         if len(items) == 0:
             return ""
+        if len(items) < 10:
+            threshold = 1.0
         matched_classes = self.find_class(items, threshold)
         return " ".join(matched_classes)
 
