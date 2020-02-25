@@ -21,7 +21,7 @@ class TFIDF(object):
                 properties_classes_set.add(_v)
         dbpedia_instances = qnode_dict.get('db_instance_types', [])
         for dbpedia_instance in dbpedia_instances:
-            if dbpedia_instance.startswith('http://dbpedia.org/ontology/'):
+            if dbpedia_instance.startswith('http://www.wikidata.org/entity/'):
                 properties_classes_set.add(dbpedia_instance)
         return properties_classes_set
 

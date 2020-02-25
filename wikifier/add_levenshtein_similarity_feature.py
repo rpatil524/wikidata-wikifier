@@ -1,6 +1,6 @@
 from similarity.normalized_levenshtein import NormalizedLevenshtein
 
-label_fields = ['wd_labels', 'wd_aliases', 'person_abbr', 'db_anchor_texts']
+label_fields = ['wd_labels', 'wd_aliases', 'person_abbr']
 
 
 class AddLevenshteinSimilarity(object):
@@ -34,18 +34,6 @@ class AddLevenshteinSimilarity(object):
                 if lev_similarity > max_lev:
                     max_lev = lev_similarity
                     max_label = l
-
-        anchors = wikidata_json.get('db_anchor_texts', [])
-        if not isinstance(anchors, list):
-            anchors = [anchors]
-        for anchor in anchors:
-            if case_sensitive:
-                lev_similarity = self.lev.similarity(label, anchor)
-            else:
-                lev_similarity = self.lev.similarity(label_lower, anchor.lower())
-            if lev_similarity > max_lev:
-                max_lev = lev_similarity
-                max_label = anchor
 
         if max_label is not None:
             return (qnode, max_lev, max_label)
