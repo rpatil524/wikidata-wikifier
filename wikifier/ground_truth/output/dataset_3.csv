@@ -1,13 +1,14 @@
-Virat Kohli,royal challengers bangalore,152,5/11/88,http://dbpedia.org/resource/Royal_Challengers_Bangalore,Q43229,Q1156897,http://dbpedia.org/resource/Royal_Challengers_Bangalore,1
-Tendulkar,mumbai indians,137,24/04/1973,http://dbpedia.org/resource/Mumbai_Indians,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
-Dhoni,chennai super kings,154,7/7/81,http://dbpedia.org/resource/Chennai_Super_Kings,Q43229,Q1292535,http://dbpedia.org/resource/Chennai_Super_Kings,1
-Jasprit Bumrah,mumbai indians,154,6/12/93,http://dbpedia.org/resource/Mumbai_Indians,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
-Ajinkya Rahane, rajasthan royals,134,6/6/88,http://dbpedia.org/resource/Rajasthan_Royals,Q43229,Q1209990,http://dbpedia.org/resource/Rajasthan_Royals,1
-Rohit Sharma,mumbai indians,159,30/04/1987,http://dbpedia.org/resource/Mumbai_Indians,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
-Bhuvneshwar Kumar,deccan chargers,154,5/2/90,http://dbpedia.org/resource/Deccan_Chargers,Q43229,Q1181758,http://dbpedia.org/resource/Deccan_Chargers,1
-Ravindra Jadeja,chennai super kings,132,6/12/88,http://dbpedia.org/resource/Chennai_Super_Kings,Q43229,Q1292535,http://dbpedia.org/resource/Chennai_Super_Kings,1
-Rishabh Pant,delhi capitals,136,4/8/97,http://dbpedia.org/resource/Delhi_Capitals,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
-Shikhar Dhawan,delhi capitals,157,5/12/85,http://dbpedia.org/resource/Delhi_Capitals,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
-Cheteshwar Pujara,deccan chargers,157,25/01/1988,http://dbpedia.org/resource/Deccan_Chargers,Q43229,Q1181758,http://dbpedia.org/resource/Deccan_Chargers,1
-Ishant Sharma,delhi capitals,168,2/9/88,http://dbpedia.org/resource/Delhi_Capitals,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
-Mohammad Shami,kings XI punjab,152,3/9/90,http://dbpedia.org/resource/Kings_XI_Punjab,Q43229,Q537658,http://dbpedia.org/resource/Kings_XI_Punjab,1
+cricketers,Value,weight,dob,correct_uris,Value_cta_class,Value_answer_Qnode,Value_answer_dburi,evaluation
+Virat Kohli,royal challengers bangalore,152,5/11/88,Q1156897,Q43229,Q1156897,http://dbpedia.org/resource/Royal_Challengers_Bangalore,1
+Tendulkar,mumbai indians,137,24/04/1973,Q1195237,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
+Dhoni,chennai super kings,154,7/7/81,Q1292535,Q43229,Q1292535,http://dbpedia.org/resource/Chennai_Super_Kings,1
+Jasprit Bumrah,mumbai indians,154,6/12/93,Q1195237,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
+Ajinkya Rahane, rajasthan royals,134,6/6/88,Q1209990,Q43229,Q1209990,http://dbpedia.org/resource/Rajasthan_Royals,1
+Rohit Sharma,mumbai indians,159,30/04/1987,Q1195237,Q43229,Q1195237,http://dbpedia.org/resource/Mumbai_Indians,1
+Bhuvneshwar Kumar,deccan chargers,154,5/2/90,Q1181758,Q43229,Q1181758,http://dbpedia.org/resource/Deccan_Chargers,1
+Ravindra Jadeja,chennai super kings,132,6/12/88,Q1292535,Q43229,Q1292535,http://dbpedia.org/resource/Chennai_Super_Kings,1
+Rishabh Pant,delhi capitals,136,4/8/97,Q738648,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
+Shikhar Dhawan,delhi capitals,157,5/12/85,Q738648,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
+Cheteshwar Pujara,deccan chargers,157,25/01/1988,Q1181758,Q43229,Q1181758,http://dbpedia.org/resource/Deccan_Chargers,1
+Ishant Sharma,delhi capitals,168,2/9/88,Q738648,Q43229,Q738648,http://dbpedia.org/resource/Delhi_Capitals,1
+Mohammad Shami,kings XI punjab,152,3/9/90,Q537658,Q43229,Q537658,http://dbpedia.org/resource/Kings_XI_Punjab,1

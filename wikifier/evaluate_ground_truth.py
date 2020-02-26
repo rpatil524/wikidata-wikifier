@@ -30,17 +30,26 @@ def upload_files(file_path, url, column_name):
 
     df = pd.read_csv(data)
 
-    df['__dummy'] = list(zip(df.correct_uris, df.Value_answer_dburi))
+    df['__dummy'] = list(zip(df.correct_uris, df.Value_answer_Qnode))
     df['evaluation'] = df['__dummy'].map(lambda x: check_if_correct_uri(x[0], x[1]))
     df.drop(columns=['__dummy'], inplace=True)
     total = len(df)
     correct = len(df[df.evaluation == '1'])
     no_answer = len(df[df.evaluation == '-1'])
-    precision = float(correct) / (float(total - no_answer))
-    recall = float(correct) / float(total)
-    f1 = 2 * precision * recall / (precision + recall)
+    try:
+        precision = float(correct) / (float(total - no_answer))
+    except:
+        precision = 0.0
+    try:
+        recall = float(correct) / float(total)
+    except:
+        recall = 0.0
+    try:
+        f1 = 2 * precision * recall / (precision + recall)
+    except:
+        f1= 0.0
     judgement_dict[file_name] = {'f1': f1, 'p': precision, 'r': recall}
-    df.to_csv('{}/output/{}'.format(ground_truth_path, file_name), index=False, header=False)
+    df.to_csv('{}/output/{}'.format(ground_truth_path, file_name), index=False)
     return resp.status_code
 
 
@@ -49,7 +58,7 @@ judgement_dict = {}
 url = "http://localhost:7805/wikify"
 
 print(__file__)
-for f_path in glob('{}/input/dataset_*.csv'.format(ground_truth_path)):
+for f_path in glob('{}/input/*.csv'.format(ground_truth_path)):
     print(f_path)
     print(upload_files(f_path, url, 'Value'))
 print(json.dumps(judgement_dict, indent=2))
