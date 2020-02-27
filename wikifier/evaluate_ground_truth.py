@@ -31,6 +31,7 @@ def upload_files(file_path, url, column_name):
     df = pd.read_csv(data)
 
     df['__dummy'] = list(zip(df.correct_uris, df.Value_answer_Qnode))
+    # df['__dummy'] = list(zip(df.correct_uris, df.Value_answer_dburi))
     df['evaluation'] = df['__dummy'].map(lambda x: check_if_correct_uri(x[0], x[1]))
     df.drop(columns=['__dummy'], inplace=True)
     total = len(df)
@@ -58,7 +59,7 @@ judgement_dict = {}
 url = "http://localhost:7805/wikify"
 
 print(__file__)
-for f_path in glob('{}/input/*.csv'.format(ground_truth_path)):
+for f_path in glob('{}/input/v16_626_1_report.csv'.format(ground_truth_path)):
     print(f_path)
     print(upload_files(f_path, url, 'Value'))
 print(json.dumps(judgement_dict, indent=2))
