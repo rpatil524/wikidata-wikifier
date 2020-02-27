@@ -29,6 +29,24 @@ class CTA(object):
             instances.append(binding['instance']['value'].split('/')[-1])
         return instances
 
+    def get_children_sparql(self, qnode):
+        query = """
+        SELECT  ?child 
+            WHERE 
+                {{ 
+                    ?child wdt:P279 wd:{qnode} . 
+                }}
+        """.format(qnode=qnode)
+        self.sparqldb.setQuery(query)
+        self.sparqldb.setReturnFormat(JSON)
+        results = self.sparqldb.query().convert()
+        children = []
+
+        bindings = results['results']['bindings']
+        for binding in bindings:
+            children.append(binding['child']['value'].split('/')[-1])
+        return children
+
     def evaluate_class_closure(self, items, current_node):
         matches = 0
         for item in items:
@@ -60,7 +78,10 @@ class CTA(object):
                 if superclass not in matched_classes:
                     matched_classes.append(superclass)
 
-                subclasses = self.direct_children_dict[superclass]
+                if self.direct_children_dict.get(superclass, []):
+                    subclasses = self.direct_children_dict[superclass]
+                else:
+                    subclasses = self.get_children_sparql(superclass)
                 for subclass in subclasses:
                     if subclass not in seen_nodes:
                         seen_nodes[subclass] = 1

@@ -59,7 +59,7 @@ judgement_dict = {}
 url = "http://localhost:7805/wikify"
 
 print(__file__)
-for f_path in glob('{}/input/v16_626_1_report.csv'.format(ground_truth_path)):
+for f_path in glob('{}/input/*.csv'.format(ground_truth_path)):
     print(f_path)
     print(upload_files(f_path, url, 'Value'))
 print(json.dumps(judgement_dict, indent=2))
