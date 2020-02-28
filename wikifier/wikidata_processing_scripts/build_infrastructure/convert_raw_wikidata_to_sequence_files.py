@@ -2,8 +2,6 @@ import json
 from pyspark import SparkContext, SparkConf, StorageLevel
 from optparse import OptionParser
 
-compression = "org.apache.hadoop.io.compress.GzipCodec"
-
 
 def json_loads(wiki_line):
     try:
@@ -24,4 +22,4 @@ if __name__ == '__main__':
 
     input_rdd = sc.textFile(input_path).map(lambda x: json_loads(x)).filter(lambda x: x is not None).map(
         lambda x: (x['id'], x))
-    input_rdd.mapValues(lambda x: json.dumps(x)).saveAsSequenceFile(output_path, compressionCodecClass=compression)
+    input_rdd.mapValues(lambda x: json.dumps(x)).saveAsSequenceFile(output_path)
