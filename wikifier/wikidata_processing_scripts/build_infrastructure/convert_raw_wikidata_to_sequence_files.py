@@ -22,6 +22,6 @@ if __name__ == '__main__':
     input_path = args[0]
     output_path = args[1]
 
-    input_rdd = sc.textFile(input_path).mapValues(lambda x: json_loads(x)).filter(lambda x: x is not None).map(
+    input_rdd = sc.textFile(input_path).map(lambda x: json_loads(x)).filter(lambda x: x is not None).map(
         lambda x: (x['id'], x))
     input_rdd.mapValues(lambda x: json.dumps(x)).saveAsSequenceFile(output_path, compressionCodecClass=compression)
