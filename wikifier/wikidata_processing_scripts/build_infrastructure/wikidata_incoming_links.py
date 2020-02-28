@@ -38,7 +38,8 @@ if __name__ == '__main__':
     input_path = args[0]
     output_path = args[1]
 
-    input_rdd = sc.textFile(input_path).mapValues(lambda x: json.loads(x))
+    input_rdd = sc.sequenceFile(input_path).mapValues(lambda x: json.loads(x))
+    print('CCCCCOUNT', input_rdd.count())
 
     wiki_map_rdd = input_rdd.flatMap(lambda x: wikidata_incoming_map(x[1])).filter(
         lambda x: x[1] is not None).reduceByKey(lambda x, y: x + y)
