@@ -16,5 +16,6 @@ for f in glob.glob('{}/part-*'.format(input_path)):
         x = json.loads(line)
         d[x['qnode']] = x['incoming_links']
 
-gzip.open('incoming_links_dictionary.json.gz', 'w').write(json.dumps(d))
+gzip.open('/data02/amandeep_wikidata/data/wikidata_infrastructure_files_2/incoming_links_dictionary.json.gz',
+          'w').write(json.dumps(d))
 print('Done')
