@@ -447,7 +447,7 @@ class Wikifier(object):
             for instance_type in dbpedia_instance_types:
                 if instance_type.startswith('http://www.wikidata.org/entity'):
                     _.append(instance_type.split('/')[-1])
-            # qnode_to_type_map[qnode] = list(set(dbpedia_instance_types))
+
             qnode_to_type_map[qnode] = _
         return qnode_to_type_map
 
@@ -508,12 +508,12 @@ class Wikifier(object):
         return _dict
 
     def wikify_column(self, i_df, column, case_sensitive=True, debug=False):
-        raw_labels = list()
-        if isinstance(column, str):
-            # access by column name
+
+        try:
             raw_labels = list(i_df[column].unique())
-        elif isinstance(column, int):
-            raw_labels = list(i_df.iloc[:, column].unique())
+        except:
+            # maybe the column id is a number
+            raw_labels = list(i_df.iloc[:, int(column)].unique())
 
         _new_i_list = []
         for label in raw_labels:
@@ -555,9 +555,6 @@ class Wikifier(object):
 
         if cta_class == "":
             cta_class = cta.process_frequency_match(all_qnodes)
-            # df['_candidates_list_filtered'] = df['_candidates_list'].map(lambda x: [_qnode for _qnode in x if cta_class in qnode_typeof_map.get(_qnode, [])])
-            # df_second_chance = cs.select_high_precision_results(df, filtered_qnodes=True)
-            # df_second_chance.to_csv('/tmp/debug_3.csv', index=False)
 
         df['cta_class'] = cta_class.split(' ')[-1]
         df['answer_Qnode'] = df['_clean_label'].map(lambda x: tfidf_answer.get(x))
@@ -565,10 +562,17 @@ class Wikifier(object):
         if debug:
             df.to_csv('/tmp/debug.csv', index=None)
         answer_dict = self.create_answer_dict(df)
+        try:
+            i_df['{}_cta_class'.format(column)] = i_df[column].map(lambda x: answer_dict[x][0])
+            i_df['{}_answer_Qnode'.format(column)] = i_df[column].map(lambda x: answer_dict[x][1])
+            i_df['{}_answer_dburi'.format(column)] = i_df[column].map(lambda x: answer_dict[x][2])
+        except:
+            column = int(column)
 
-        i_df['{}_cta_class'.format(column)] = i_df[column].map(lambda x: answer_dict[x][0])
-        i_df['{}_answer_Qnode'.format(column)] = i_df[column].map(lambda x: answer_dict[x][1])
-        i_df['{}_answer_dburi'.format(column)] = i_df[column].map(lambda x: answer_dict[x][2])
+            i_df['{}_cta_class'.format(column)] = i_df.iloc[:, column].map(lambda x: answer_dict[x][0])
+            i_df['{}_answer_Qnode'.format(column)] = i_df.iloc[:, column].map(lambda x: answer_dict[x][1])
+            i_df['{}_answer_dburi'.format(column)] = i_df.iloc[:, column].map(lambda x: answer_dict[x][2])
+
         return i_df
 
     def wikify(self, i_df, columns, format=None, case_sensitive=True):

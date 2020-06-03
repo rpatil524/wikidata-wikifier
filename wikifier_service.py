@@ -12,6 +12,7 @@ app = Flask(__name__)
 wikifier = Wikifier()
 config = json.load(open('wikifier/config.json'))
 
+
 @app.route('/')
 def wikidata_wikifier():
     return "ISI's Wikidata based wikifier"
@@ -24,10 +25,17 @@ def wikify():
     skiprows = request.form.get('skiprows', None)
     if columns is not None:
         columns = columns.split(',')
-        if skiprows:
-            df = pd.read_csv(request.files['file'], dtype=object, skiprows=int(skiprows))
+        int_columns = check_if_columns_int(columns)
+        if int_columns:
+            if skiprows:
+                df = pd.read_csv(request.files['file'], dtype=object, skiprows=int(skiprows), header=None)
+            else:
+                df = pd.read_csv(request.files['file'], dtype=object, lineterminator='\n', header=None)
         else:
-            df = pd.read_csv(request.files['file'], dtype=object)
+            if skiprows:
+                df = pd.read_csv(request.files['file'], dtype=object, skiprows=int(skiprows))
+            else:
+                df = pd.read_csv(request.files['file'], dtype=object, lineterminator='\n')
     else:
         if skiprows:
             df = pd.read_csv(request.files['file'], dtype=object, header=None, names=['value'], skiprows=int(skiprows))
@@ -51,11 +59,22 @@ def wikify():
     if format and (format.lower() == 'wikifier' or format.lower() == 'iswc'):
         r_df.to_csv('{}/results.csv'.format(_path), index=False, header=False)
         lines = open('{}/results.csv'.format(_path)).readlines()
-        lines  = [line.replace('\n', '') for line in lines]
+        lines = [line.replace('\n', '') for line in lines]
         return json.dumps({'data': lines})
     else:
         r_df.to_csv('{}/results.csv'.format(_path), index=False)
         return send_from_directory(_path, 'results.csv')
+
+
+def check_if_columns_int(columns):
+    if not isinstance(columns, list):
+        columns = [columns]
+    for column in columns:
+        try:
+            _ = int(column)
+        except:
+            return False
+    return True
 
 
 if __name__ == '__main__':

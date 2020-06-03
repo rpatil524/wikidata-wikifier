@@ -20,12 +20,12 @@ def upload_files(file_path, url, column_name):
     data = StringIO(s)
 
     df = pd.read_csv(data, header=None)
-    df.to_csv('sample_files/cricketers_results.csv'.format(file_name[:-4]), index=False, header=False)
+    df.to_csv('/Users/amandeep/Github/table-linker/tl/utility/t2dv2/candidates/47709681_0_4437772923903322343.csv'.format(file_name[:-4]), index=False, header=False)
     print(resp.text)
     return resp.status_code
 
 
-file_path = '/Users/amandeep/Github/wikidata-wikifier/wikifier/sample_files/cricketers.csv'
+file_path = '/Users/amandeep/Github/table-linker/tl/utility/t2dv2/47709681_0_4437772923903322343_no_header.csv'
 
 url = "http://localhost:7805/wikify"
-print(upload_files(file_path, url, 'cricketers,teams'))
+print(upload_files(file_path, url, '1'))
